@@ -5,28 +5,26 @@ import 'package:get/get.dart';
 
 class SplashScreenController extends GetxController{
 
-  RxInt seconds=0.obs;
+  RxInt seconds=10.obs;
 
   void increaseSeconds(){
     Timer.periodic(const Duration(seconds: 1), (timer){
-      if(seconds.value == 10){
+      if(seconds.value == 0){
         timer.cancel();
         Get.offAndToNamed(kHomeScreenRoute);
       }else{
-        seconds++;
+        seconds--;
       }
     });
   }
   @override
-  void onReady() {
+  void onInit() {
     increaseSeconds();
-    super.onReady();
+    super.onInit();
   }
 
   void onScreenTap(){
-    if(seconds.value != 10){
-      seconds.value=10;
-    }
+    seconds.value=0;
   }
 
 
