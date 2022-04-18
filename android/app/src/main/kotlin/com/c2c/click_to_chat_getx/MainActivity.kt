@@ -1,4 +1,4 @@
-package com.c2c.click_to_chat
+package com.c2c.click_to_chat_getx
 
 import io.flutter.embedding.android.FlutterActivity
 

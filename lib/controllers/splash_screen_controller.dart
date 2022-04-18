@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 class SplashScreenController extends GetxController{
 
-  RxInt seconds=10.obs;
+  RxInt seconds=5.obs;
 
   void increaseSeconds(){
     Timer.periodic(const Duration(seconds: 1), (timer){
