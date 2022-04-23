@@ -24,6 +24,7 @@ class SplashScreenController extends GetxController{
   }
 
   void onScreenTap(){
+    print("{{{{{{{{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}}}}}}}}}}}");
     seconds.value=0;
   }
 
