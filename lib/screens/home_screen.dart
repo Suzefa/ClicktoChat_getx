@@ -1,10 +1,10 @@
 import 'package:click_to_chat/controllers/home_screen_controller.dart';
+import 'package:click_to_chat/utils/application_constants.dart';
+import 'package:click_to_chat/utils/common_code.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
-import '../utils/application_constants.dart';
 
 class HomeScreen extends GetView<HomeScreenController> {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,35 +12,38 @@ class HomeScreen extends GetView<HomeScreenController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        extendBody: true,
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          centerTitle: true,
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: const [
-              Text(
-                'Open Chats Faster',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-              Icon(
-                Icons.mobile_friendly,
-                color: Colors.black,
-              ),
-            ],
+      child: WillPopScope(
+        onWillPop: CommonCode().onBackButtonPressed,
+        child: Scaffold(
+          extendBody: true,
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            centerTitle: true,
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                Text(
+                  'Open Chats Faster',
+                  style:
+                      TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                Icon(
+                  Icons.mobile_friendly,
+                  color: Colors.black,
+                ),
+              ],
+            ),
+            backgroundColor: Colors.green.shade100,
+            elevation: 0,
           ),
-          backgroundColor: Colors.green.shade100,
-          elevation: 0,
-        ),
-        body: GestureDetector(
-          onTap: controller.checkFocus,
-          child: Stack(
-            children: [
-              _backgroundImage(),
-              _foregroundWidget(),
-            ],
+          body: GestureDetector(
+            onTap: controller.checkFocus,
+            child: Stack(
+              children: [
+                _backgroundImage(),
+                _foregroundWidget(),
+              ],
+            ),
           ),
         ),
       ),
@@ -210,5 +213,4 @@ class HomeScreen extends GetView<HomeScreenController> {
       ),
     );
   }
-
 }
