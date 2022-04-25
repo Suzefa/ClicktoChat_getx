@@ -19,6 +19,7 @@ class SplashScreen extends GetView<SplashScreenController> {
           child: Center(
             child: Container(
               width: Get.width,
+              height: Get.height,
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Image.asset(
                 kLogoTransparentAddress,
