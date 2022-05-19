@@ -9,6 +9,7 @@ class HomeScreenController extends GetxController {
 
   RxString fieldErrorMessage = ''.obs, countryCode = '+92'.obs;
   RxInt textFieldLength = 11.obs;
+  RxList<String> historyList = RxList<String>();
 
   @override
   void onInit() {
@@ -44,12 +45,15 @@ class HomeScreenController extends GetxController {
   void launchWhatsapp(String number) async {
     String url = 'https://wa.me/$number';
 
-    await launch(url)
-        ? await canLaunch(url)
-        : Get.snackbar('Profile Error', 'Profile Not Found');
+    bool bol = false;
+    bol = await launch(url);
+    if (!bol) {
+      bol = await canLaunch(url);
+    }
+    print('===================> $bol');
   }
 
-  void checkFocus() {
+  void removeFocus() {
     if (phoneFieldFocusNode.hasFocus) {
       phoneFieldFocusNode.unfocus();
     }

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 class CustomScaffold extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
+  final String? screenName;
   final String className;
   final Widget bodyWidget;
   final Function? onScreenTap, onBackButtonPress;
@@ -14,6 +15,7 @@ class CustomScaffold extends StatelessWidget {
     required this.className,
     this.onBackButtonPress,
     this.onScreenTap,
+    this.screenName,
     Key? key,})
       : super(key: key);
 
@@ -22,7 +24,7 @@ class CustomScaffold extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: className==kSplashScreenRoute.split('/').last ? null :  PreferredSize(
-          preferredSize: const Size.fromHeight(100),
+          preferredSize: const Size.fromHeight(70),
           child: _customAppBar(context),
         ),
         key: scaffoldKey,
@@ -40,7 +42,10 @@ class CustomScaffold extends StatelessWidget {
                 onScreenTap!();
               }
             },
-            child: bodyWidget,
+            child: Container(
+              width: Get.width,
+              color: Colors.white60,
+              child: bodyWidget,),
           ),
         ),
       ),
@@ -96,10 +101,7 @@ class CustomScaffold extends StatelessWidget {
           _drawerButton(
             title: 'Exit',
             iconData: Icons.exit_to_app,
-            function: () {
-              Get.back();
-              CommonCode().onBackButtonPressed();
-            },
+            function: CommonCode().onBackButtonPressed,
           ),
           _customDivider(),
           CommonCode().customTextWidget(text: 'Version: 1.0.0'),
@@ -179,55 +181,47 @@ class CustomScaffold extends StatelessWidget {
   }
 
   Widget _customAppBar(BuildContext context) {
-    RxBool isMenuItemElevated = true.obs;
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        width: Get.width,
-        height: 70,
-        child: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                scaffoldKey.currentState!.openDrawer();
-              },
-              child: Material(
-                elevation: 5.0,
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2.0)
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: Icon(Icons.menu, size: 35.0,),
+      width: Get.width,
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.black,width: 2.0),),
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              scaffoldKey.currentState!.openDrawer();
+            },
+            child: const Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Icon(Icons.menu, size: 35.0,),
+            ),
+          ),
+          const Spacer(),
+          CommonCode().customTextWidget(text: screenName ?? 'Well Come',textSize: 20),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(right: 5.0),
+            child: Material(
+              elevation: 5.0,
+              borderRadius: BorderRadius.circular(35.0),
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey,width: 2.0),
+                  borderRadius: BorderRadius.circular(35.0),
+                  image: const DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(kLogoAddress,),
                   ),
                 ),
               ),
             ),
-            const Spacer(),
-            CommonCode().customTextWidget(text: 'Well Come',textSize: 25.0),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(35.0),
-                child: Container(
-                  width: 70,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey,width: 2.0),
-                    borderRadius: BorderRadius.circular(35.0),
-                    image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(kLogoAddress,),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          ),
 
-          ],
-        ),
+        ],
       ),
     );
   }

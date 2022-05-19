@@ -14,6 +14,7 @@ class StatusScreen extends GetView<StatusScreenController> {
       bodyWidget: _body(),
       scaffoldKey: controller.statusScreenKey,
       className: runtimeType.toString(),
+      screenName: 'Status Page',
     );
   }
 
@@ -22,10 +23,10 @@ class StatusScreen extends GetView<StatusScreenController> {
       width: Get.width,
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       decoration: const BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20.0),
-        ),
+        color: Colors.white60,
+        // borderRadius: BorderRadius.all(
+        //   Radius.circular(20.0),
+        // ),
       ),
       // child: _scrollableList(),
     );
