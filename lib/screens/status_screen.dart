@@ -7,8 +7,35 @@ class StatusScreen extends GetView<StatusScreenController> {
 
   @override
   Widget build(BuildContext context) {
+    return _body();
+  }
+
+  Widget _body() {
     return Scaffold(
-      body: Container(),
+      body: Container(
+        width: Get.width,
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        decoration: const BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.all(
+            Radius.circular(20.0),
+          ),
+        ),
+        child: _scrollableList(),
+      ),
+    );
+  }
+
+  Widget _scrollableList() {
+    return Obx(
+      () => controller.statusDirectory.existsSync()
+          ? ListView(
+              physics: const BouncingScrollPhysics(),
+              children: [
+                for (String path in controller.filesInDirectoryList) Text(path),
+              ],
+            )
+          : const Text('Please Install Whatsapp First'),
     );
   }
 }
