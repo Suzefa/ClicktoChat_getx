@@ -1,4 +1,5 @@
 import 'package:click_to_chat/controllers/home_screen_controller.dart';
+import 'package:click_to_chat/screens/custom_screens/custom_scaffold.dart';
 import 'package:click_to_chat/utils/application_constants.dart';
 import 'package:click_to_chat/utils/common_code.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -11,42 +12,20 @@ class HomeScreen extends GetView<HomeScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: CommonCode().onBackButtonPressed,
-        child: Scaffold(
-          extendBody: true,
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            centerTitle: true,
-            title: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Text(
-                  'Open Chats Faster',
-                  style:
-                      TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-                Icon(
-                  Icons.mobile_friendly,
-                  color: Colors.black,
-                ),
-              ],
-            ),
-            backgroundColor: Colors.green.shade100,
-            elevation: 0,
-          ),
-          body: GestureDetector(
-            onTap: controller.checkFocus,
-            child: Stack(
-              children: [
-                _backgroundImage(),
-                _foregroundWidget(),
-              ],
-            ),
-          ),
-        ),
-      ),
+    return CustomScaffold(
+      bodyWidget: _body(),
+      scaffoldKey: controller.homeScreenKey,
+      className: runtimeType.toString(),
+      onBackButtonPress: CommonCode().onBackButtonPressed,
+    );
+  }
+
+  Widget _body() {
+    return Stack(
+      children: [
+        _backgroundImage(),
+        _foregroundWidget(),
+      ],
     );
   }
 
@@ -84,7 +63,7 @@ class HomeScreen extends GetView<HomeScreenController> {
     );
   }
 
-  Widget _searchCard(){
+  Widget _searchCard() {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Card(
@@ -99,12 +78,11 @@ class HomeScreen extends GetView<HomeScreenController> {
               _customSizedBox(height: 20.0),
               const Text(
                 'Open Chats Without Saving Number',
-                style: TextStyle(
-                    fontSize: 20.0, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               _customSizedBox(height: 20.0),
               Obx(
-                    () => Visibility(
+                () => Visibility(
                   visible: controller.fieldErrorMessage.isNotEmpty,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 30.0),
@@ -119,12 +97,12 @@ class HomeScreen extends GetView<HomeScreenController> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(
-                    left: 10.0, right: 10.0, top: 5.0),
+                padding:
+                    const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
                 height: 60,
                 width: Get.width,
                 child: Obx(
-                      () => TextField(
+                  () => TextField(
                     onChanged: (textValue) {
                       controller.checkField();
                     },
@@ -134,37 +112,32 @@ class HomeScreen extends GetView<HomeScreenController> {
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,
                     maxLength: controller.textFieldLength.value,
-                    controller:
-                    controller.phoneNumberTextEditingController,
+                    controller: controller.phoneNumberTextEditingController,
                     focusNode: controller.phoneFieldFocusNode,
                     decoration: InputDecoration(
                       contentPadding:
-                      const EdgeInsets.symmetric(vertical: 10.0),
+                          const EdgeInsets.symmetric(vertical: 10.0),
                       prefixIcon: CountryCodePicker(
                         showFlag: true,
                         initialSelection: 'PK',
                         favorite: const ['+92', 'PK'],
                         onChanged: (country) {
-                          controller.countryCode.value =
-                          '${country.dialCode}';
+                          controller.countryCode.value = '${country.dialCode}';
                         },
                       ),
                       counterText: '',
                       filled: true,
                       fillColor: Colors.white,
                       focusedBorder: const OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(50)),
-                          borderSide: BorderSide(
-                              width: 2.0, color: Colors.blueGrey)),
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          borderSide:
+                              BorderSide(width: 2.0, color: Colors.blueGrey)),
                       enabledBorder: const OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(50)),
-                          borderSide: BorderSide(
-                              width: 2.0, color: Colors.black26)),
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          borderSide:
+                              BorderSide(width: 2.0, color: Colors.black26)),
                       border: const OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(50)),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
                       ),
                     ),
                   ),

@@ -37,6 +37,7 @@ dependencies:
   url_launcher: ^6.0.20
   get: 4.6.3
   country_code_picker: ^2.0.2
+  get_storage: ^2.0.3
 
 dev_dependencies:
   flutter_test:

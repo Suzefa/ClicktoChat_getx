@@ -9,8 +9,8 @@ import 'package:get/get.dart';
 class PageRoutes{
 
   static List<GetPage> routeGenerator=<GetPage>[
-    GetPage(name: kSplashScreenRoute, page:()=>const SplashScreen(),binding: ScreenBindings()),
-    GetPage(name: kHomeScreenRoute, page:()=>const HomeScreen(),binding: ScreenBindings()),
-    GetPage(name: kStatusScreenRoute, page:()=>const StatusScreen(),binding: ScreenBindings()),
+    GetPage(name: kSplashScreenRoute, page:()=>const SplashScreen(),binding: ScreenBindings(),transition: Transition.rightToLeft),
+    GetPage(name: kHomeScreenRoute, page:()=>const HomeScreen(),binding: ScreenBindings(),transition: Transition.rightToLeft),
+    GetPage(name: kStatusScreenRoute, page:()=>const StatusScreen(),binding: ScreenBindings(),transition: Transition.rightToLeft),
   ];
 }
