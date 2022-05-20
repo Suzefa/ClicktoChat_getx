@@ -32,16 +32,16 @@ class StatusScreen extends GetView<StatusScreenController> {
     );
   }
 
-  Widget _scrollableList() {
-    return Obx(
-      () => controller.statusDirectory.existsSync()
-          ? ListView(
-              physics: const BouncingScrollPhysics(),
-              children: [
-                for (String path in controller.filesInDirectoryList) Text(path),
-              ],
-            )
-          : const Text('Please Install Whatsapp First'),
-    );
-  }
+  // Widget _scrollableList() {
+  //   return Obx(
+  //     () => controller.statusDirectory.existsSync()
+  //         ? ListView(
+  //             physics: const BouncingScrollPhysics(),
+  //             children: [
+  //               // for (String path in controller.filesInDirectoryList) Text(path),
+  //             ],
+  //           )
+  //         : const Text('Please Install Whatsapp First'),
+  //   );
+  // }
 }

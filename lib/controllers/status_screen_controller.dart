@@ -9,14 +9,26 @@ class StatusScreenController extends GetxController {
 
   RxList<String> filesInDirectoryList = RxList<String>();
   final statusDirectory =
-      Directory(kInternalStorageBaseLocation + kLocalNewWAMediaStorage);
+      Directory(kInternalStorageBaseLocation + kLocalOldWAMediaStorage);
 
-  void fetchDataFromDirectory() {
-    filesInDirectoryList.value = statusDirectory
+  void fetchDataFromDirectory() async{
+    // filesInDirectoryList.value = statusDirectory.listSync().map((FileSystemEntity fileSystemEntity) => fileSystemEntity).where((element) => element.path.isNotEmpty).toList(growable: false);
+    // print('=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${filesInDirectoryList.length}');
+    // for (FileSystemEntity element in filesInDirectoryList) {
+    //   print('====================================> File in status directory $element');
+    // }
+
+    final imageList = statusDirectory
         .listSync()
-        .map((filesItem) => filesItem.path)
-        .where((element) => element.endsWith('.jpg'))
-        .toList(growable: false);
+        .map((item) => item.path).toList(growable: false);
+    print("imageList======================> $imageList");
+    print("--------**********************> ${statusDirectory.listSync().first.statSync().type}");
+  }
+
+  @override
+  void onInit() {
+    fetchDataFromDirectory();
+    super.onInit();
   }
 
 /*RxList<FileSystemEntity> dataInFolder=RxList<FileSystemEntity>();
