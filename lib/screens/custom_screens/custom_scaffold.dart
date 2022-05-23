@@ -28,7 +28,7 @@ class CustomScaffold extends StatelessWidget {
           child: _customAppBar(context),
         ),
         key: scaffoldKey,
-        drawer: _customDrawer(),
+        drawer:className==kImageViewerScreenRoute.split('/').last ? null : _customDrawer(),
         body: WillPopScope(
           onWillPop: () async {
             if (onBackButtonPress != null) {

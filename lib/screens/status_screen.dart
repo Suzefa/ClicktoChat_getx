@@ -1,11 +1,12 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:click_to_chat/controllers/status_screen_controller.dart';
 import 'package:click_to_chat/screens/custom_screens/custom_scaffold.dart';
 import 'package:click_to_chat/utils/common_code.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:video_player/video_player.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class StatusScreen extends GetView<StatusScreenController> {
   const StatusScreen({Key? key}) : super(key: key);
@@ -56,60 +57,83 @@ class StatusScreen extends GetView<StatusScreenController> {
                   ],
                 ),
               ),
-              controller.isPhotoButtonPressed.isTrue
-                  ? Wrap(
-                      children: [
-                        for (String path in controller.filesInDirectoryList)
-                          if (path.contains('.jpg'))
-                            Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Material(
-                                elevation: 5.0,
+              Visibility(
+                visible: controller.isPhotoButtonPressed.value,
+                child: Wrap(
+                  children: [
+                    for (String path in controller.filesInDirectoryList)
+                      if (path.contains('.jpg'))
+                        Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Material(
+                            elevation: 5.0,
+                            borderRadius: BorderRadius.circular(50.0),
+                            child: Container(
+                              width: 70,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.grey, width: 2.0),
                                 borderRadius: BorderRadius.circular(50.0),
-                                child: Container(
-                                  width: 70,
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey, width: 2.0),
-                                    borderRadius: BorderRadius.circular(50.0),
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: FileImage(
-                                        File(path),
-                                      ),
-                                    ),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                    File(path),
                                   ),
                                 ),
                               ),
                             ),
-                      ],
-                    )
-                  : Wrap(
-                      children: [
-                        for (String path in controller.filesInDirectoryList)
-                          if (path.contains('.mp4'))
-                            Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Material(
-                                elevation: 5.0,
-                                borderRadius: BorderRadius.circular(50.0),
-                                child: Container(
-                                  width: 70,
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey, width: 2.0),
-                                    borderRadius: BorderRadius.circular(50.0),
-                                    color: Colors.black
-                                  ),
-                                  child: const Icon(Icons.play_arrow,color: Colors.white,),
-                                ),
-                              ),
-                            ),
-                      ],
-                    ),
+                          ),
+                        ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: controller.isVideoButtonPressed.value,
+                child: Wrap(
+                  children: [
+                    for (String path in controller.filesInDirectoryList)
+                      if (path.contains('.mp4'))
+                        _videoThumbnailsViewer(videoPath: path),
+                  ],
+                ),
+              ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _videoThumbnailsViewer({required String videoPath}) {
+    Rx<Uint8List> imageThumbnailPath = Uint8List(2905).obs;
+    VideoThumbnail.thumbnailData(
+      video: videoPath,
+      imageFormat: ImageFormat.JPEG,
+      maxWidth: 128,
+      // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+      quality: 25,
+    ).then((value) => {imageThumbnailPath.value = value!});
+    return Padding(
+      padding: const EdgeInsets.all(6.0),
+      child: Material(
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(50.0),
+        child: Container(
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey, width: 2.0),
+            borderRadius: BorderRadius.circular(50.0),
+            image: imageThumbnailPath.value.contains(-2905)
+                ? null
+                : DecorationImage(
+                    image: MemoryImage(imageThumbnailPath.value),
+                  ),
+          ),
+          child: const Icon(
+            Icons.play_arrow,
+            color: Colors.white,
           ),
         ),
       ),
@@ -184,5 +208,4 @@ class StatusScreen extends GetView<StatusScreenController> {
       ),
     );
   }
-
 }

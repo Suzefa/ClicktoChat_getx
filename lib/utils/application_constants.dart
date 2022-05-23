@@ -3,6 +3,7 @@ const String kSplashScreenRoute ='/SplashScreen';
 const String kHomeScreenRoute ='/HomeScreen';
 const String kStatusScreenRoute='/StatusScreen';
 const String kCustomScaffoldRoute = '/CustomScaffold';
+const String kImageViewerScreenRoute = '/ImageViewerScreenRoute';
 
 const String kBackgroundImageAddress='assets/logo/bg.jpg';
 const String kLogoAddress='assets/logo/app_logo.png';

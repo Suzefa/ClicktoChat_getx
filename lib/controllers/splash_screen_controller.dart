@@ -15,6 +15,8 @@ class SplashScreenController extends GetxController
   final GlobalKey<ScaffoldState> splashScreenKey = GlobalKey<ScaffoldState>();
   final statusDirectoryNew =
       Directory(kInternalStorageBaseLocation + kLocalNewWAMediaStorage);
+  final statusDirectoryOld =
+  Directory(kInternalStorageBaseLocation + kLocalOldWAMediaStorage);
   final GetStorage _storage = GetStorage();
 
   RxInt seconds = 2.obs;
@@ -27,25 +29,20 @@ class SplashScreenController extends GetxController
   void increaseSeconds() async {
     Future.delayed(const Duration(seconds: 2), () {
       isLoadingElevated.toggle();
-    });
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (seconds.value == 0) {
-        timer.cancel();
-        if (PermissionSession.globalPermissions.value.isAllPermissionProvided !=
-            -1) {
-          Get.offAndToNamed(kHomeScreenRoute);
-        } else {
-          isPermissionWidgetVisible.toggle();
-        }
+      if (PermissionSession.globalPermissions.value.isAllPermissionProvided !=
+          -1) {
+        Get.offAndToNamed(kHomeScreenRoute);
       } else {
-        seconds--;
+        Future.delayed(const Duration(milliseconds: 2800),(){
+          isPermissionWidgetVisible.toggle();
+        });
       }
     });
   }
 
   void onDonePermissionButton() async {
     PermissionSession.globalPermissions.value.isAllPermissionProvided = 1;
-    if(statusDirectoryNew.existsSync()) {
+    if(statusDirectoryOld.existsSync()) {
       PermissionSession.globalPermissions.value.isExternalStoragePermissionProvided = 1 ;
     }
     await _storage.write(kPermissionSessionStoreToken,
