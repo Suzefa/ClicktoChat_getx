@@ -8,35 +8,23 @@ class StatusScreenController extends GetxController {
   final GlobalKey<ScaffoldState> statusScreenKey = GlobalKey<ScaffoldState>();
 
   RxList<String> filesInDirectoryList = RxList<String>();
-  final statusDirectory =
+  RxBool isLoaded= false.obs,isPhotoButtonPressed = false.obs,isVideoButtonPressed=false.obs;
+  final statusDirectoryNew =
+      Directory(kInternalStorageBaseLocation + kLocalNewWAMediaStorage);
+  final statusDirectoryOld =
       Directory(kInternalStorageBaseLocation + kLocalOldWAMediaStorage);
 
-  void fetchDataFromDirectory() async{
-    // filesInDirectoryList.value = statusDirectory.listSync().map((FileSystemEntity fileSystemEntity) => fileSystemEntity).where((element) => element.path.isNotEmpty).toList(growable: false);
-    // print('=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${filesInDirectoryList.length}');
-    // for (FileSystemEntity element in filesInDirectoryList) {
-    //   print('====================================> File in status directory $element');
-    // }
 
-    final imageList = statusDirectory
-        .listSync()
-        .map((item) => item.path).toList(growable: false);
-    print("imageList======================> $imageList");
-    print("--------**********************> ${statusDirectory.listSync().first.statSync().type}");
+  void fetchDataFromDirectory() {
+    if(statusDirectoryOld.existsSync()){
+      filesInDirectoryList.clear();
+      filesInDirectoryList.value = statusDirectoryOld.listSync().map((FileSystemEntity file) => file.path).toList();
+    }else if(statusDirectoryNew.existsSync()){
+      filesInDirectoryList.clear();
+      filesInDirectoryList.value = statusDirectoryNew.listSync().map((FileSystemEntity file) => file.path).toList();
+    }
+    isLoaded.value = true;
+    isPhotoButtonPressed.value=true;
   }
-
-  @override
-  void onInit() {
-    fetchDataFromDirectory();
-    super.onInit();
-  }
-
-/*RxList<FileSystemEntity> dataInFolder=RxList<FileSystemEntity>();
-
-  void getDataFromDirectory(Directory directory){
-    directory.list().forEach((element) {
-
-    });
-  }*/
 
 }

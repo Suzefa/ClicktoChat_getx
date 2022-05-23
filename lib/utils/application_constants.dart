@@ -10,5 +10,6 @@ const String kLogoTransparentAddress='assets/logo/app_logo_transparent.png';
 
 const String kInternalStorageBaseLocation='/storage/emulated/0';
 const String kLocalOldWAMediaStorage='/WhatsApp/Media/.Statuses';
-// const String kLocalNewWAMediaStorage='/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/';
-const String kLocalNewWAMediaStorage='/DCIM/Screenshots/';
+const String kLocalNewWAMediaStorage='/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/';
+
+const String kPermissionSessionStoreToken = 'PermissionSession';

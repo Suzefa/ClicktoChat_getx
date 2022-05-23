@@ -131,11 +131,11 @@ class CommonCode {
     }
   }
 
-  Widget customTextWidget({String? text, double? textSize}) {
+  Widget customTextWidget({String? text, double? textSize,Color? textColor}) {
     return Text(
       text ?? '',
       style: TextStyle(
-          color: Colors.black, fontWeight: FontWeight.bold, fontSize: textSize),
+          color: textColor ?? Colors.black, fontWeight: FontWeight.bold, fontSize: textSize),
     );
   }
 
