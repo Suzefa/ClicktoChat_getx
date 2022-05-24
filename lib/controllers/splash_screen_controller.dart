@@ -6,6 +6,7 @@ import 'package:click_to_chat/utils/application_constants.dart';
 import 'package:click_to_chat/utils/permission_handler.dart';
 import 'package:click_to_chat/utils/permission_session.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -66,11 +67,25 @@ class SplashScreenController extends GetxController
     }
   }
 
+  Future<void> saveAssetsPhotoToDirectory()async{
+    if(!kAppMainDirectory.existsSync()){
+      await kAppMainDirectory.create();
+      await kAppMediaDirectory.create();
+
+      // await kAppMediaDirectory.create();
+      final ByteData imageData = await rootBundle.load(kLogoAddress);
+      final File imageFile = File(kAppMediaDirectoryPath+'appLogo');
+      final file=await imageFile.writeAsBytes(imageData.buffer.asUint8List(imageData.offsetInBytes,imageData.lengthInBytes));
+      print('==========================>${file.path}');
+    }
+  }
+
   void onExternalStoragePermission() async {
     PermissionSession.globalPermissions.value.isExternalStoragePermissionProvided =
     await PermissionHandler().askPermissionToManageExternalStorage();
     if(PermissionSession.globalPermissions.value.isExternalStoragePermissionProvided==1){
       externalStoragePermission.value=true;
+      await saveAssetsPhotoToDirectory();
     }
   }
 

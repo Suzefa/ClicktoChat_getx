@@ -175,15 +175,22 @@ class StatusScreen extends GetView<StatusScreenController> {
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey, width: 2.0),
               borderRadius: BorderRadius.circular(50.0),
-              image: imageThumbnailPath.value.contains(-2905)
-                  ? null
-                  : DecorationImage(
-                      image: MemoryImage(imageThumbnailPath.value),
-                    ),
+              // image: imageThumbnailPath.value.contains(-2905)
+              //     ? null
+              //     : DecorationImage(
+              //         image: MemoryImage(imageThumbnailPath.value),
+              //   fit: BoxFit.fill,
+              //       ),
             ),
-            child: const Icon(
-              Icons.play_arrow,
-              color: Colors.white,
+            child: Stack(
+              children: [
+                imageThumbnailPath.value.contains(-2905) ?
+                Visibility(visible: false,child: Container()) : Image.memory(imageThumbnailPath.value,fit: BoxFit.cover,),
+                const Icon(
+                  Icons.play_arrow,
+                  color: Colors.white,
+                ),
+              ],
             ),
           ),
         ),
