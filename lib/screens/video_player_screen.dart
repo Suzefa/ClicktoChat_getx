@@ -1,61 +1,68 @@
-import 'dart:io';
-
-import 'package:click_to_chat/controllers/image_viewer_screen_controller.dart';
-import 'package:click_to_chat/screens/custom_screens/custom_scaffold.dart';
+import 'package:click_to_chat/controllers/video_player_screen_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
-class ImageViewerScreen extends GetView<ImageViewerScreenController> {
-  const ImageViewerScreen({Key? key}) : super(key: key);
+import 'custom_screens/custom_scaffold.dart';
+
+class VideoPlayerScreen extends GetView<VideoPlayerScreenController> {
+  const VideoPlayerScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      screenName: 'Image Viewer',
-      bodyWidget: _body(),
-      scaffoldKey: controller.imageScreenKey,
+      scaffoldKey: controller.videoPlayerScreenControllerKey,
       className: runtimeType.toString(),
-      onBackButtonPress: () => Get.back(),
+      bodyWidget: _body(),
+      screenName: 'Video Player',
+      onBackButtonPress: () async {
+        await controller.videoPlayerController.pause();
+        Get.back();
+
+      },
     );
   }
 
-  Widget _body() {
+  Widget _body(){
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 20.0,right: 20.0,bottom: 50.0),
           child: Container(
-            height: Get.height-300,
             width: Get.width,
+            height: Get.height-300,
             decoration: BoxDecoration(
-              // borderRadius: BorderRadius.circular(25.0),
-              border: Border.all(color: Colors.black,width: 2),
-              color: Colors.black
+              border: Border.all(color: Colors.black,width: 2)
             ),
             child: Material(
-              elevation: 8.7,
-              child: Image.file(File(controller.imageAddressArgument),fit: BoxFit.contain,),
+              elevation: 8.9,
+              child: VideoPlayer(controller.videoPlayerController),
             ),
           ),
         ),
-        _saveImageButton(),
+        _videoPlayPauseButton(),
       ],
     );
   }
 
-  Widget _saveImageButton() {
+  Widget _videoPlayPauseButton() {
     RxBool isElevated = true.obs;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0,),
       child: Obx(
             () =>
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 isElevated.value = false;
                 Future.delayed(const Duration(milliseconds: 200), () {
                   isElevated.value = true;
                 });
+                if(controller.videoPlayerController.value.isPlaying){
+                  await controller.videoPlayerController.pause();
+                }else if(!controller.videoPlayerController.value.isPlaying){
+                  await controller.videoPlayerController.play();
+                }
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
@@ -78,9 +85,9 @@ class ImageViewerScreen extends GetView<ImageViewerScreenController> {
                   ]
                       : null,
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Icon(Icons.download_sharp,size: 50,),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Icon(controller.videoPlayerController.value.isPlaying ? Icons.pause : !controller.videoPlayerController.value.isPlaying ? Icons.play_arrow : null,size: 50,),
                 ),
               ),
             ),

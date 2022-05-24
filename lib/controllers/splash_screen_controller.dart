@@ -29,13 +29,13 @@ class SplashScreenController extends GetxController
   void increaseSeconds() async {
     Future.delayed(const Duration(seconds: 2), () {
       isLoadingElevated.toggle();
+    });
+    Future.delayed(const Duration(milliseconds: 2800),(){
       if (PermissionSession.globalPermissions.value.isAllPermissionProvided !=
           -1) {
         Get.offAndToNamed(kHomeScreenRoute);
       } else {
-        Future.delayed(const Duration(milliseconds: 2800),(){
-          isPermissionWidgetVisible.toggle();
-        });
+        isPermissionWidgetVisible.toggle();
       }
     });
   }

@@ -28,7 +28,7 @@ class CustomScaffold extends StatelessWidget {
           child: _customAppBar(context),
         ),
         key: scaffoldKey,
-        drawer:className==kImageViewerScreenRoute.split('/').last ? null : _customDrawer(),
+        drawer: (className==kImageViewerScreenRoute.split('/').last || className==kVideoPlayerScreenRoute.split('/').last) ? null : _customDrawer(),
         body: WillPopScope(
           onWillPop: () async {
             if (onBackButtonPress != null) {
@@ -191,11 +191,16 @@ class CustomScaffold extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              scaffoldKey.currentState!.openDrawer();
+              print('=================> $className');
+              if(className==kImageViewerScreenRoute.split('/').last || className==kVideoPlayerScreenRoute.split('/').last){
+                Get.back();
+              } else {
+                scaffoldKey.currentState!.openDrawer();
+              }
             },
-            child: const Padding(
-              padding: EdgeInsets.all(4.0),
-              child: Icon(Icons.menu, size: 35.0,),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Icon((className==kImageViewerScreenRoute.split('/').last || className==kVideoPlayerScreenRoute.split('/').last) ? Icons.arrow_back_rounded : Icons.menu, size: 35.0,),
             ),
           ),
           const Spacer(),

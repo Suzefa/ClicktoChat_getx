@@ -1,13 +1,16 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:click_to_chat/utils/application_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class CommonCode {
   CommonCode._internalConstructor();
 
   static final CommonCode _commonCode = CommonCode._internalConstructor();
-  static const platform = MethodChannel('com.c2c.click_to_chat_getx');
 
   factory CommonCode() {
     return _commonCode;
@@ -139,15 +142,74 @@ class CommonCode {
     );
   }
 
-  Future<void> checkAndroidVersion()async{
-    int version = 0;
-    try {
-      version = int.parse(
-          await platform.invokeMethod('getBatteryLevel') ?? "0");
-    } catch (e) {
-      print('----------------------> ${e.toString()}');
-    }
-    print(' --------------------> android Version $version');
+  Widget imageView({required String imagePath}){
+    return GestureDetector(
+      onTap: (){
+        Get.toNamed(kImageViewerScreenRoute,arguments: imagePath);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: Material(
+          elevation: 5.0,
+          borderRadius: BorderRadius.circular(50.0),
+          child: Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              border:
+              Border.all(color: Colors.grey, width: 2.0),
+              borderRadius: BorderRadius.circular(50.0),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: FileImage(
+                  File(imagePath),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget videoThumbnailsViewer({required String videoPath}) {
+    Rx<Uint8List> imageThumbnailPath = Uint8List(2905).obs;
+    VideoThumbnail.thumbnailData(
+      video: videoPath,
+      imageFormat: ImageFormat.JPEG,
+      // maxWidth: 128,
+      // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+      // quality: 25,
+    ).then((value) => {imageThumbnailPath.value = value!});
+    return GestureDetector(
+      onTap: (){
+        Get.toNamed(kVideoPlayerScreenRoute,arguments: videoPath);
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: Material(
+          elevation: 5.0,
+          borderRadius: BorderRadius.circular(50.0),
+          child: Obx(() =>  Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 2.0),
+              borderRadius: BorderRadius.circular(50.0),
+              image: imageThumbnailPath.value.contains(-2905)
+                  ? null
+                  : DecorationImage(
+                image: MemoryImage(imageThumbnailPath.value),
+              ),
+            ),
+            child: const Icon(
+              Icons.play_arrow,
+              color: Colors.white,
+            ),
+          ),),
+        ),
+      ),
+    );
   }
 
 }
