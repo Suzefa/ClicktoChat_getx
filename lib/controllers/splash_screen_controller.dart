@@ -64,6 +64,10 @@ class SplashScreenController extends GetxController
     await PermissionHandler().askPermissionToManageStorage();
     if(PermissionSession.globalPermissions.value.isStoragePermissionProvided==1){
       storagePermission.value=true;
+      if(statusDirectoryOld.existsSync()){
+        await saveAssetsPhotoToDirectory();
+        externalStoragePermission.value=true;
+      }
     }
   }
 
@@ -71,10 +75,11 @@ class SplashScreenController extends GetxController
     if(!kAppMainDirectory.existsSync()){
       await kAppMainDirectory.create();
       await kAppMediaDirectory.create();
-
-      // await kAppMediaDirectory.create();
+      await kAppTempDataDirectory.create();
+      await kAppPhotosDataDirectory.create();
+      await kAppVideosDataDirectory.create();
       final ByteData imageData = await rootBundle.load(kLogoAddress);
-      final File imageFile = File(kAppMediaDirectoryPath+'appLogo');
+      final File imageFile = File(kAppMediaDirectoryPath+'/appLogo.png');
       final file=await imageFile.writeAsBytes(imageData.buffer.asUint8List(imageData.offsetInBytes,imageData.lengthInBytes));
       print('==========================>${file.path}');
     }

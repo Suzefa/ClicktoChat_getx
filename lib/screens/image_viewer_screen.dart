@@ -56,6 +56,7 @@ class ImageViewerScreen extends GetView<ImageViewerScreenController> {
                 Future.delayed(const Duration(milliseconds: 200), () {
                   isElevated.value = true;
                 });
+                controller.saveImageToFolder();
               },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),

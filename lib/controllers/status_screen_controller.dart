@@ -8,6 +8,7 @@ class StatusScreenController extends GetxController {
   final GlobalKey<ScaffoldState> statusScreenKey = GlobalKey<ScaffoldState>();
 
   RxList<String> filesInDirectoryList = RxList<String>();
+  RxList<String> listOfThumbnails=RxList<String>();
   RxBool isLoaded= false.obs,isPhotoButtonPressed = false.obs,isVideoButtonPressed=false.obs;
   final statusDirectoryNew =
       Directory(kInternalStorageBaseLocation + kLocalNewWAMediaStorage);
@@ -25,6 +26,17 @@ class StatusScreenController extends GetxController {
     }
     isLoaded.value = true;
     isPhotoButtonPressed.value=true;
+  }
+
+  void saveThumbNailsForVideos(String videoUrl)async{
+    if(File(kTempDataDirectoryPath+'/'+videoUrl.split('/').last).existsSync()){
+
+    }
+    // for(String videoUrl in filesInDirectoryList){
+    //   if(videoUrl.contains('.mp4')){
+    //
+    //   }
+    // }
   }
 
 }

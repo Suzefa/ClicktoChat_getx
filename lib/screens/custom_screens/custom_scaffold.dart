@@ -191,9 +191,8 @@ class CustomScaffold extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              print('=================> $className');
               if(className==kImageViewerScreenRoute.split('/').last || className==kVideoPlayerScreenRoute.split('/').last){
-                Get.back();
+                onBackButtonPress!();
               } else {
                 scaffoldKey.currentState!.openDrawer();
               }

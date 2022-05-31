@@ -173,14 +173,14 @@ class CommonCode {
   }
 
   Widget videoThumbnailsViewer({required String videoPath}) {
-    Rx<Uint8List> imageThumbnailPath = Uint8List(2905).obs;
-    VideoThumbnail.thumbnailData(
-      video: videoPath,
-      imageFormat: ImageFormat.JPEG,
-      // maxWidth: 128,
-      // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-      // quality: 25,
-    ).then((value) => {imageThumbnailPath.value = value!});
+    // Rx<Uint8List> imageThumbnailPath = Uint8List(2905).obs;
+    // VideoThumbnail.thumbnailData(
+    //   video: videoPath,
+    //   imageFormat: ImageFormat.JPEG,
+    //   // maxWidth: 128,
+    //   // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+    //   // quality: 25,
+    // ).then((value) => {imageThumbnailPath.value = value!});
     return GestureDetector(
       onTap: (){
         Get.toNamed(kVideoPlayerScreenRoute,arguments: videoPath);
@@ -190,23 +190,21 @@ class CommonCode {
         child: Material(
           elevation: 5.0,
           borderRadius: BorderRadius.circular(50.0),
-          child: Obx(() =>  Container(
+          child: Container(
             width: 70,
             height: 70,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey, width: 2.0),
               borderRadius: BorderRadius.circular(50.0),
-              image: imageThumbnailPath.value.contains(-2905)
-                  ? null
-                  : DecorationImage(
-                image: MemoryImage(imageThumbnailPath.value),
+              image: DecorationImage(
+                image: FileImage(File(kAppMediaDirectoryPath+'/appLogo.png'),),
               ),
             ),
             child: const Icon(
               Icons.play_arrow,
               color: Colors.white,
             ),
-          ),),
+          ),
         ),
       ),
     );

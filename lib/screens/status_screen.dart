@@ -79,7 +79,7 @@ class StatusScreen extends GetView<StatusScreenController> {
                             visible: controller.isPhotoButtonPressed.value,
                             child: CommonCode().imageView(imagePath: path),
                           )
-                        : path.contains('mp4')
+                        : path.contains('.mp4')
                             ? Visibility(
                                 visible: controller.isVideoButtonPressed.value,
                                 child: CommonCode().videoThumbnailsViewer(videoPath: path),

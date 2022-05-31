@@ -30,14 +30,15 @@ class VideoPlayerScreen extends GetView<VideoPlayerScreenController> {
         Padding(
           padding: const EdgeInsets.only(left: 20.0,right: 20.0,bottom: 50.0),
           child: Container(
-            width: Get.width,
-            height: Get.height-300,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black,width: 2)
             ),
             child: Material(
               elevation: 8.9,
-              child: VideoPlayer(controller.videoPlayerController),
+              child: AspectRatio(
+                aspectRatio: controller.videoPlayerController.value.aspectRatio,
+                child: VideoPlayer(controller.videoPlayerController),
+              ),
             ),
           ),
         ),
@@ -87,7 +88,7 @@ class VideoPlayerScreen extends GetView<VideoPlayerScreenController> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: Icon(controller.videoPlayerController.value.isPlaying ? Icons.pause : !controller.videoPlayerController.value.isPlaying ? Icons.play_arrow : null,size: 50,),
+                  child: Icon(controller.videoPlayerController.value.isPlaying ? Icons.pause : Icons.play_arrow,size: 50,),
                 ),
               ),
             ),
